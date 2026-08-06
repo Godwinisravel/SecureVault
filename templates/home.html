@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="text-center mt-5">
+
+    <h1 class="display-3 fw-bold text-primary">
+        🔐 SecureVault
+    </h1>
+
+    <p class="lead mt-4">
+
+        Securely store, organize and protect all your passwords.
+
+    </p>
+
+    <div class="mt-4">
+
+        <a href="{% url 'login' %}"
+           class="btn btn-primary btn-lg me-3">
+
+            Login
+
+        </a>
+
+        <a href="{% url 'register' %}"
+           class="btn btn-success btn-lg">
+
+            Register
+
+        </a>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<div class="row text-center">
+
+    <div class="col-md-4">
+
+        <h3>🔒 Secure</h3>
+
+        <p>
+            Passwords are encrypted before being stored.
+        </p>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <h3>⚡ Fast</h3>
+
+        <p>
+            Search, edit and manage passwords instantly.
+        </p>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <h3>🛡 Safe</h3>
+
+        <p>
+            Built with Django, MySQL and strong encryption.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

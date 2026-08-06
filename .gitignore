@@ -1,0 +1,12 @@
+# Python / Virtual Environment
+venv/
+*.pyc
+__pycache__/
+
+# Database & Secret files
+*.sqlite3
+db.sqlite3
+.env
+
+# Media uploads
+media/

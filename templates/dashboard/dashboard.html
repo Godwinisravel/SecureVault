@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-5">
+
+Dashboard
+
+</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="card">
+
+<div class="card-body">
+
+<h5>
+
+Passwords
+
+</h5>
+
+<h1>
+
+{{ total_passwords }}
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card">
+
+<div class="card-body">
+
+<h5>
+
+Favorites
+
+</h5>
+
+<h1>
+
+{{ favorites }}
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card">
+
+<div class="card-body">
+
+<h5>
+
+Categories
+
+</h5>
+
+<h1>
+
+{{ categories }}
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="mt-5">
+
+<a href="{% url 'vault' %}"
+
+class="btn btn-primary">
+
+Open Vault
+
+</a>
+
+</div>
+
+{% endblock %}

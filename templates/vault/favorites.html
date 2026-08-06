@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+⭐ Favorite Passwords
+</h2>
+
+{% if passwords %}
+
+<div class="row">
+
+{% for item in passwords %}
+
+<div class="col-md-6 mb-3">
+
+<div class="card p-3">
+
+<h5>{{ item.website }}</h5>
+
+<p>{{ item.username }}</p>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+No favorite passwords yet.
+
+</div>
+
+{% endif %}
+
+{% endblock %}

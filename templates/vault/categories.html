@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">
+📂 Categories
+</h2>
+
+{% if categories %}
+
+<div class="row">
+
+{% for category in categories %}
+
+<div class="col-md-4 mb-3">
+
+<div class="card p-4">
+
+    <h4>{{ category.name }}</h4>
+
+    <hr>
+
+    {% if category.passwordentry_set.all %}
+
+        <ul class="list-unstyled">
+
+        {% for password in category.passwordentry_set.all %}
+
+            <li class="mb-2">
+
+                🌐 <strong>{{ password.website }}</strong><br>
+
+                <small>{{ password.username }}</small>
+
+            </li>
+
+        {% empty %}
+
+            <li>No passwords in this category.</li>
+
+        {% endfor %}
+
+        </ul>
+
+    {% endif %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+No categories found.
+
+</div>
+
+{% endif %}
+
+{% endblock %}
