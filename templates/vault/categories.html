@@ -1,65 +1,199 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}Categories — SecureVault{% endblock %}
 
 {% block content %}
 
-<h2 class="mb-4">
-📂 Categories
-</h2>
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-white mb-1">
+            <i class="bi bi-folder-fill text-info me-2"></i>
+            Categories
+        </h2>
 
-{% if categories %}
+        <p class="text-secondary small mb-0">
+            Organize your saved credentials into categories.
+        </p>
+    </div>
 
-<div class="row">
+    <a href="{% url 'add_password' %}"
+       class="btn btn-primary d-inline-flex align-items-center gap-2">
+        <i class="bi bi-plus-circle-fill"></i>
+        Add Password
+    </a>
+</div>
 
-{% for category in categories %}
 
-<div class="col-md-4 mb-3">
+<!-- Category Summary -->
+<div class="row g-3 mb-4">
 
-<div class="card p-4">
+    <div class="col-md-4">
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm h-100">
+            <div class="card-body p-4 d-flex align-items-center justify-content-between">
 
-    <h4>{{ category.name }}</h4>
+                <div>
+                    <span class="text-secondary text-uppercase small">
+                        Total Categories
+                    </span>
 
-    <hr>
+                    <h2 class="fw-bold text-white mb-0 mt-2">
+                        {{ categories|length }}
+                    </h2>
+                </div>
 
-    {% if category.passwordentry_set.all %}
+                <div class="p-3 bg-info bg-opacity-10 text-info rounded-3">
+                    <i class="bi bi-folder-fill fs-3"></i>
+                </div>
 
-        <ul class="list-unstyled">
-
-        {% for password in category.passwordentry_set.all %}
-
-            <li class="mb-2">
-
-                🌐 <strong>{{ password.website }}</strong><br>
-
-                <small>{{ password.username }}</small>
-
-            </li>
-
-        {% empty %}
-
-            <li>No passwords in this category.</li>
-
-        {% endfor %}
-
-        </ul>
-
-    {% endif %}
+            </div>
+        </div>
+    </div>
 
 </div>
 
+
+<!-- Categories -->
+<div class="row g-4">
+
+    {% for category in categories %}
+
+    <div class="col-md-6 col-xl-4">
+
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm h-100">
+
+            <div class="card-body p-4">
+
+                <!-- Category Header -->
+                <div class="d-flex justify-content-between align-items-start mb-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="category-icon">
+                            <i class="bi bi-folder-fill"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="fw-bold text-white mb-1">
+                                {{ category.name }}
+                            </h5>
+
+                            <span class="text-secondary small">
+                                Category
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <span class="badge text-bg-secondary">
+                        {{ category.passwordentry_set.all|length }}
+                    </span>
+
+                </div>
+
+
+                <!-- Passwords -->
+                {% with entries=category.passwordentry_set.all %}
+
+                    {% if entries %}
+
+                        <div class="category-password-list">
+
+                            {% for entry in entries %}
+
+                                <div class="category-password-item">
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        <i class="bi bi-globe2 text-info"></i>
+
+                                        <div class="text-truncate">
+
+                                            <div class="text-light fw-semibold text-truncate">
+                                                {{ entry.website }}
+                                            </div>
+
+                                            <div class="text-secondary small text-truncate">
+                                                {{ entry.username }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <a href="{% url 'edit_password' entry.id %}"
+                                       class="btn btn-sm btn-outline-secondary"
+                                       title="Edit">
+
+                                        <i class="bi bi-pencil"></i>
+
+                                    </a>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="text-center py-4">
+
+                            <i class="bi bi-folder2-open text-secondary fs-2"></i>
+
+                            <p class="text-secondary small mb-0 mt-2">
+                                No passwords in this category.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                {% endwith %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <!-- Empty State -->
+    <div class="col-12">
+
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <div class="mb-3">
+                    <i class="bi bi-folder-x text-secondary display-3"></i>
+                </div>
+
+                <h4 class="text-white fw-bold">
+                    No Categories Yet
+                </h4>
+
+                <p class="text-secondary mb-4">
+                    Categories will help you organize your password entries.
+                </p>
+
+                <a href="{% url 'add_password' %}"
+                   class="btn btn-primary">
+
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Add Your First Password
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
 </div>
-
-{% endfor %}
-
-</div>
-
-{% else %}
-
-<div class="alert alert-info">
-
-No categories found.
-
-</div>
-
-{% endif %}
 
 {% endblock %}

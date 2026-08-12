@@ -1,121 +1,465 @@
 {% extends 'base.html' %}
 
+
+{% block title %}Vault — SecureVault{% endblock %}
+
+
 {% block content %}
 
+<!-- Page Header -->
 <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h2>My Vault</h2>
+    <div>
+        <h2 class="fw-bold text-white mb-1">
+            My Vault
+        </h2>
 
-    <a href="{% url 'add_password' %}" class="btn btn-primary">
+        <p class="text-secondary small mb-0">
+            Manage, reveal, and search your saved password credentials.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'add_password' %}"
+        class="btn btn-primary d-inline-flex align-items-center gap-2"
+    >
         <i class="bi bi-plus-circle"></i>
         Add Password
     </a>
 
 </div>
 
+
+<!-- Search Bar -->
 <div class="mb-4">
 
-    <input
-        type="text"
-        class="form-control"
-        placeholder="🔍 Search passwords...">
+    <div class="input-group">
+
+        <span class="input-group-text bg-dark border-secondary-subtle text-secondary">
+            <i class="bi bi-search"></i>
+        </span>
+
+        <input
+            type="text"
+            id="searchInput"
+            class="form-control bg-dark text-light border-secondary-subtle"
+            placeholder="Search by website or username..."
+            onkeyup="filterPasswords()"
+        >
+
+    </div>
 
 </div>
 
-<div class="row">
 
-{% for item in passwords %}
+<!-- Vault Grid -->
+<div class="row" id="vaultGrid">
 
-<div class="col-lg-6 mb-4">
+    {% for item in passwords %}
 
-<div class="card password-card">
+    <div
+        class="col-lg-6 mb-4 vault-card-item"
+        data-search="{{ item.website|lower }} {{ item.username|lower }}"
+    >
 
-<div class="card-body">
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm h-100">
 
-<div class="d-flex justify-content-between">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
 
-<h5 class="fw-bold text-light">
-    <i class="bi bi-globe2 text-info"></i>
-    {{ item.website }}
-</h5>
+                <div>
 
-{% if item.favorite %}
+                    <!-- Header Actions -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
 
-<i class="bi bi-star-fill text-warning"></i>
+                        <h5 class="fw-bold text-light mb-0">
 
-{% else %}
+                            <i class="bi bi-globe2 text-info me-2"></i>
 
-<i class="bi bi-star text-light"></i>
+                            {{ item.website }}
 
-{% endif %}
+                        </h5>
+
+
+                        <a
+                            href="{% url 'toggle_favorite' item.id %}"
+                            class="text-warning text-decoration-none fs-5"
+                            title="Toggle Favorite"
+                        >
+
+                            {% if item.favorite %}
+
+                                <i class="bi bi-star-fill"></i>
+
+                            {% else %}
+
+                                <i class="bi bi-star opacity-50 text-light"></i>
+
+                            {% endif %}
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- Username -->
+                    <p class="text-secondary font-monospace small mb-3">
+                        {{ item.username }}
+                    </p>
+
+
+                    <!-- Password Display -->
+                    <div
+                        class="bg-body-tertiary p-3 rounded-3 mb-3 border border-secondary-subtle d-flex justify-content-between align-items-center"
+                    >
+
+                        <span
+                            id="pwd-display-{{ item.id }}"
+                            class="text-light fw-semibold font-monospace"
+                        >
+                            ••••••••••••
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Footer Actions -->
+                <div
+                    class="pt-2 border-top border-secondary-subtle d-flex justify-content-end gap-2"
+                >
+
+                    <!-- Show / Hide -->
+                    <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        onclick="togglePassword({{ item.id }}, this)"
+                        title="Show/Hide Password"
+                    >
+
+                        <i class="bi bi-eye"></i>
+
+                    </button>
+
+
+                    <!-- Copy -->
+                    <button
+                        type="button"
+                        class="btn btn-outline-success btn-sm"
+                        onclick="copyPassword({{ item.id }}, this)"
+                        title="Copy Password"
+                    >
+
+                        <i class="bi bi-clipboard"></i>
+
+                    </button>
+
+
+                    <!-- Edit -->
+                    <a
+                        class="btn btn-outline-warning btn-sm"
+                        href="{% url 'edit_password' item.id %}"
+                        title="Edit Entry"
+                    >
+
+                        <i class="bi bi-pencil"></i>
+
+                    </a>
+
+
+                    <!-- Delete -->
+                    <form
+                        method="POST"
+                        action="{% url 'delete_password' item.id %}"
+                        style="display: inline;"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="return confirm('Are you sure you want to delete this password?');"
+                            title="Delete Entry"
+                        >
+
+                            <i class="bi bi-trash"></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% empty %}
+
+    <div class="col-12" id="emptyVaultMsg">
+
+        <div
+            class="card bg-dark border border-secondary-subtle rounded-3 p-5 text-center"
+        >
+
+            <i class="bi bi-shield-lock text-secondary display-4 mb-3"></i>
+
+            <h5 class="text-white">
+                No Passwords Saved
+            </h5>
+
+            <p class="text-secondary small">
+                Click the button above to store your first login entry.
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
 
 </div>
 
-<p class="text-secondary">
+{% endblock %}
 
-{{ item.username }}
 
-</p>
+{% block extra_js %}
 
-<h5>
+<script>
 
-<span
-id="pwd{{ item.id }}"
-class="text-light fw-semibold">
+/*
+========================================================
+SHOW / HIDE PASSWORD
+========================================================
+*/
 
-••••••••••••
+async function togglePassword(id, btn) {
 
-</span>
+    const display = document.getElementById(
+        `pwd-display-${id}`
+    );
 
-</h5>
+    const icon = btn.querySelector("i");
 
-<hr>
 
-<div class="d-flex gap-2">
+    if (!display) {
 
-<button
-class="btn btn-outline-primary copy-btn"
-onclick="togglePassword({{ item.id }},this)">
+        console.error(
+            "Password display element not found."
+        );
 
-<i class="bi bi-eye"></i>
+        return;
+    }
 
-</button>
 
-<button
-class="btn btn-outline-success copy-btn"
-onclick="copyPassword({{ item.id }},this)">
+    /*
+    If the password is currently hidden,
+    request the actual password from Django.
+    */
 
-<i class="bi bi-clipboard"></i>
+    if (display.dataset.visible !== "true") {
 
-</button>
+        try {
 
-<a
-class="btn btn-outline-warning"
-href="{% url 'edit_password' item.id %}">
+            const response = await fetch(
+                `/vault/show/${id}/`
+            );
 
-<i class="bi bi-pencil"></i>
 
-</a>
+            if (!response.ok) {
 
-<a
-class="btn btn-outline-danger"
-href="{% url 'delete_password' item.id %}"
-onclick="return confirm('Delete password?')">
+                throw new Error(
+                    "Unable to retrieve password."
+                );
 
-<i class="bi bi-trash"></i>
+            }
 
-</a>
 
-</div>
+            const data = await response.json();
 
-</div>
 
-</div>
+            if (!data.password) {
 
-</div>
+                alert(
+                    "This password is empty."
+                );
 
-{% endfor %}
+                return;
 
-</div>
+            }
+
+
+            display.textContent = data.password;
+
+            display.dataset.visible = "true";
+
+            icon.className = "bi bi-eye-slash";
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Password error:",
+                error
+            );
+
+            alert(
+                "Unable to retrieve password."
+            );
+
+        }
+
+    }
+
+    /*
+    Hide the password again.
+    */
+
+    else {
+
+        display.textContent = "••••••••••••";
+
+        display.dataset.visible = "false";
+
+        icon.className = "bi bi-eye";
+
+    }
+
+}
+
+
+/*
+========================================================
+COPY PASSWORD
+========================================================
+*/
+
+async function copyPassword(id, btn) {
+
+    const icon = btn.querySelector("i");
+
+
+    try {
+
+        const response = await fetch(
+            `/vault/show/${id}/`
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to retrieve password."
+            );
+
+        }
+
+
+        const data = await response.json();
+
+
+        if (!data.password) {
+
+            alert(
+                "This password is empty."
+            );
+
+            return;
+
+        }
+
+
+        await navigator.clipboard.writeText(
+            data.password
+        );
+
+
+        /*
+        Change clipboard icon to check.
+        */
+
+        icon.className =
+            "bi bi-check-lg text-success";
+
+
+        setTimeout(function () {
+
+            icon.className =
+                "bi bi-clipboard";
+
+        }, 2000);
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Copy error:",
+            error
+        );
+
+        alert(
+            "Unable to copy password."
+        );
+
+    }
+
+}
+
+
+/*
+========================================================
+LIVE SEARCH
+========================================================
+*/
+
+function filterPasswords() {
+
+    const query =
+        document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const cards =
+        document.querySelectorAll(
+            ".vault-card-item"
+        );
+
+
+    cards.forEach(function (card) {
+
+        const searchData =
+            card.getAttribute(
+                "data-search"
+            );
+
+
+        if (
+            searchData.includes(query)
+        ) {
+
+            card.style.display = "block";
+
+        }
+
+        else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
 
 {% endblock %}

@@ -1,0 +1,669 @@
+/* =========================================================
+   SecureVault - Global Styles
+   ========================================================= */
+
+:root {
+    --sv-sidebar-width: 260px;
+    --sv-transition: 0.2s ease;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    min-height: 100vh;
+}
+
+/* =========================================================
+   Sidebar
+   ========================================================= */
+
+aside {
+    min-height: 100vh;
+    width: var(--sv-sidebar-width);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+aside .nav-link {
+    border-radius: 0.6rem;
+    padding: 0.7rem 0.85rem;
+    transition:
+        background-color var(--sv-transition),
+        color var(--sv-transition),
+        transform var(--sv-transition);
+}
+
+aside .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff !important;
+    transform: translateX(3px);
+}
+
+aside .nav-link i {
+    width: 22px;
+    text-align: center;
+}
+
+aside hr {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* =========================================================
+   Main Content
+   ========================================================= */
+
+main {
+    min-width: 0;
+}
+
+.messages {
+    max-width: 720px;
+}
+
+/* =========================================================
+   Cards
+   ========================================================= */
+
+.card {
+    transition:
+        transform var(--sv-transition),
+        box-shadow var(--sv-transition),
+        border-color var(--sv-transition);
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.btn {
+    transition:
+        transform var(--sv-transition),
+        box-shadow var(--sv-transition);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* =========================================================
+   Password Display
+   ========================================================= */
+
+.password-display {
+    min-height: 48px;
+    word-break: break-all;
+}
+
+.password-masked {
+    letter-spacing: 2px;
+}
+
+/* =========================================================
+   Vault Cards
+   ========================================================= */
+
+.vault-card-item .card {
+    overflow: hidden;
+}
+
+.vault-card-item:hover .card {
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================================
+   Search
+   ========================================================= */
+
+#searchInput {
+    min-height: 46px;
+}
+
+#searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* =========================================================
+   Forms
+   ========================================================= */
+
+.form-control,
+.form-select {
+    min-height: 44px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Password inputs */
+
+input[type="password"] {
+    letter-spacing: 0.05em;
+}
+
+/* =========================================================
+   Empty States
+   ========================================================= */
+
+.empty-state {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+/* =========================================================
+   Links
+   ========================================================= */
+
+a {
+    transition:
+        color var(--sv-transition),
+        opacity var(--sv-transition);
+}
+
+/* =========================================================
+   Scrollbar
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================================
+   Responsive Layout
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    aside {
+        width: 220px !important;
+    }
+
+    main {
+        padding: 1.25rem !important;
+    }
+
+    h1.display-5 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+
+    .d-flex.justify-content-between.align-items-center {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    aside {
+        width: 200px !important;
+    }
+
+    .card-body {
+        padding: 1rem !important;
+    }
+}
+
+/* =========================================================
+   Categories
+   ========================================================= */
+
+.category-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+
+    font-size: 1.3rem;
+}
+
+.category-password-list {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0.75rem;
+}
+
+.category-password-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    padding: 0.7rem;
+
+    border-radius: 0.6rem;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.category-password-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(2px);
+}
+
+.category-password-item + .category-password-item {
+    margin-top: 0.25rem;
+}
+
+.category-password-item .btn {
+    flex-shrink: 0;
+}
+
+.category-password-item .text-truncate {
+    max-width: 180px;
+}
+
+/* =========================================================
+   SecureVault Login Page
+   ========================================================= */
+
+.login-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(13, 110, 253, 0.15),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(13, 202, 240, 0.08),
+            transparent 35%
+        ),
+        #0b0f14;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Inter", sans-serif;
+}
+
+.login-wrapper {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+}
+
+/* =========================================================
+   Branding
+   ========================================================= */
+
+.login-brand {
+    width: 45%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4rem;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(13, 110, 253, 0.10),
+            rgba(13, 202, 240, 0.02)
+        );
+
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-content {
+    max-width: 420px;
+}
+
+.brand-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: rgba(13, 110, 253, 0.12);
+
+    border: 1px solid rgba(13, 110, 253, 0.25);
+
+    color: #0d6efd;
+
+    font-size: 2rem;
+
+    margin-bottom: 1.5rem;
+
+    box-shadow:
+        0 0 40px rgba(13, 110, 253, 0.12);
+}
+
+.brand-content h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.brand-content h1 span {
+    color: #0d6efd;
+}
+
+.brand-content > p {
+    color: #8b949e;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+}
+
+/* Security Points */
+
+.security-points {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.security-points div {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    color: #adb5bd;
+
+    font-size: 0.9rem;
+}
+
+.security-points i {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(13, 110, 253, 0.1);
+
+    color: #0d6efd;
+}
+
+/* =========================================================
+   Login Section
+   ========================================================= */
+
+.login-section {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 2rem;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 2.5rem;
+
+    background: rgba(20, 25, 32, 0.85);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35);
+
+    backdrop-filter: blur(15px);
+}
+
+/* =========================================================
+   Login Logo
+   ========================================================= */
+
+.login-logo {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: rgba(13, 110, 253, 0.12);
+
+    border: 1px solid rgba(13, 110, 253, 0.25);
+
+    color: #0d6efd;
+
+    font-size: 1.7rem;
+}
+
+/* =========================================================
+   Login Inputs
+   ========================================================= */
+
+.login-input {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.login-input .input-group-text {
+    background: #11161d;
+    border-color: #343a40;
+    color: #6c757d;
+}
+
+.login-input input {
+    background: #11161d !important;
+    border-color: #343a40;
+    color: #fff !important;
+
+    min-height: 48px;
+}
+
+.login-input input:focus {
+    background: #11161d !important;
+    color: #fff !important;
+
+    border-color: #0d6efd;
+
+    box-shadow: none;
+}
+
+.login-input input::placeholder {
+    color: #6c757d;
+}
+
+/* Password Toggle */
+
+.password-toggle {
+    background: #11161d;
+    border: 1px solid #343a40;
+    border-left: 0;
+
+    color: #6c757d;
+
+    min-width: 48px;
+}
+
+.password-toggle:hover {
+    color: #fff;
+    background: #171d25;
+}
+
+/* =========================================================
+   Login Button
+   ========================================================= */
+
+.login-button {
+    min-height: 50px;
+
+    border-radius: 10px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 8px 25px rgba(13, 110, 253, 0.18);
+}
+
+.login-button:hover {
+    box-shadow:
+        0 10px 30px rgba(13, 110, 253, 0.28);
+}
+
+/* =========================================================
+   Security Footer
+   ========================================================= */
+
+.login-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+
+    color: #6c757d;
+
+    font-size: 0.72rem;
+
+    text-align: center;
+}
+
+.login-security i {
+    color: #198754;
+}
+
+/* =========================================================
+   Responsive Login
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .login-brand {
+        width: 40%;
+        padding: 2rem;
+    }
+
+    .brand-content h1 {
+        font-size: 2.3rem;
+    }
+
+    .brand-content > p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+
+    .login-wrapper {
+        display: block;
+    }
+
+    .login-brand {
+        width: 100%;
+        min-height: auto;
+
+        padding: 2rem 1.5rem;
+
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-content {
+        text-align: center;
+    }
+
+    .brand-icon {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .brand-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .brand-content > p {
+        margin-bottom: 1.5rem;
+    }
+
+    .security-points {
+        display: none;
+    }
+
+    .login-section {
+        padding: 2rem 1rem;
+    }
+
+    .login-card {
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* =========================================================
+   Register Page
+   ========================================================= */
+
+.password-info {
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    background: rgba(13, 110, 253, 0.06);
+
+    border: 1px solid rgba(13, 110, 253, 0.15);
+
+    color: #8b949e;
+
+    font-size: 0.75rem;
+}
+
+.password-info i {
+    color: #0d6efd;
+    font-size: 1rem;
+}

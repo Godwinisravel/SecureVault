@@ -1,99 +1,77 @@
 {% extends 'base.html' %}
 
+{% block title %}Dashboard — SecureVault{% endblock %}
+
 {% block content %}
-
-<h2 class="mb-5">
-
-Dashboard
-
-</h2>
-
-<div class="row">
-
-<div class="col-md-4">
-
-<div class="card">
-
-<div class="card-body">
-
-<h5>
-
-Passwords
-
-</h5>
-
-<h1>
-
-{{ total_passwords }}
-
-</h1>
-
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-white mb-1">Dashboard</h2>
+        <p class="text-secondary small mb-0">Overview of your stored digital vault credentials.</p>
+    </div>
+    <a href="{% url 'add_password' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+        <i class="bi bi-plus-circle-fill"></i> Add Password
+    </a>
 </div>
 
+<!-- Metrics Cards Row -->
+<div class="row g-3 mb-5">
+    <!-- Total Passwords Card -->
+    <div class="col-md-4">
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm h-100">
+            <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-secondary text-uppercase font-monospace fs-7">Total Passwords</span>
+                    <h1 class="display-5 fw-bold text-white mb-0 mt-2">{{ total_passwords|default:"0" }}</h1>
+                </div>
+                <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3">
+                    <i class="bi bi-key-fill fs-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Favorites Card -->
+    <div class="col-md-4">
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm h-100">
+            <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-secondary text-uppercase font-monospace fs-7">Favorites</span>
+                    <h1 class="display-5 fw-bold text-white mb-0 mt-2">{{ favorites|default:"0" }}</h1>
+                </div>
+                <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3">
+                    <i class="bi bi-star-fill fs-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Card -->
+    <div class="col-md-4">
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm h-100">
+            <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-secondary text-uppercase font-monospace fs-7">Categories</span>
+                    <h1 class="display-5 fw-bold text-white mb-0 mt-2">{{ categories|default:"0" }}</h1>
+                </div>
+                <div class="p-3 bg-info bg-opacity-10 text-info rounded-3">
+                    <i class="bi bi-folder-fill fs-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Navigation Callout -->
+<div class="card bg-dark border border-secondary-subtle rounded-3 p-4 shadow-sm">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+        <div>
+            <h5 class="fw-semibold text-white mb-1">Access Stored Credentials</h5>
+            <p class="text-secondary small mb-0">Manage, reveal, or update your encrypted passwords safely.</p>
+        </div>
+        <a href="{% url 'vault' %}" class="btn btn-outline-light px-4 d-inline-flex align-items-center gap-2">
+            <i class="bi bi-safe-fill text-primary"></i> Open Vault
+        </a>
+    </div>
 </div>
-
-<div class="col-md-4">
-
-<div class="card">
-
-<div class="card-body">
-
-<h5>
-
-Favorites
-
-</h5>
-
-<h1>
-
-{{ favorites }}
-
-</h1>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-md-4">
-
-<div class="card">
-
-<div class="card-body">
-
-<h5>
-
-Categories
-
-</h5>
-
-<h1>
-
-{{ categories }}
-
-</h1>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="mt-5">
-
-<a href="{% url 'vault' %}"
-
-class="btn btn-primary">
-
-Open Vault
-
-</a>
-
-</div>
-
 {% endblock %}

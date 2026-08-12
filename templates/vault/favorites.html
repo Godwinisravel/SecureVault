@@ -1,41 +1,101 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}Favorites — SecureVault{% endblock %}
 
 {% block content %}
-
-<h2 class="mb-4">
-⭐ Favorite Passwords
-</h2>
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-white mb-1"><i class="bi bi-star-fill text-warning me-2"></i>Favorite Passwords</h2>
+        <p class="text-secondary small mb-0">Quick access to your starred credentials.</p>
+    </div>
+</div>
 
 {% if passwords %}
+<div class="row g-3">
+    {% for item in passwords %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card bg-dark border border-secondary-subtle rounded-3 shadow-sm h-100">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <!-- Header Actions -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="fw-bold text-light mb-0">
+                            <i class="bi bi-globe2 text-info me-2"></i>{{ item.website }}
+                        </h5>
+                        <a href="{% url 'toggle_favorite' item.id %}" class="text-warning text-decoration-none fs-5" title="Remove from Favorites">
+                            <i class="bi bi-star-fill"></i>
+                        </a>
+                    </div>
 
-<div class="row">
+                    <!-- Username -->
+                    <p class="text-secondary font-monospace small mb-3">{{ item.username }}</p>
 
-{% for item in passwords %}
+                    <!-- Masked Password Container -->
+                    <div class="bg-body-tertiary p-3 rounded-3 mb-3 border border-secondary-subtle d-flex justify-content-between align-items-center">
+                        <span id="fav-pwd-display-{{ item.id }}" class="text-light fw-semibold font-monospace">••••••••••••</span>
+                        <input type="hidden" id="fav-raw-pwd-{{ item.id }}" value="{{ item.password }}">
+                    </div>
+                </div>
 
-<div class="col-md-6 mb-3">
-
-<div class="card p-3">
-
-<h5>{{ item.website }}</h5>
-
-<p>{{ item.username }}</p>
-
+                <!-- Footer Actions -->
+                <div class="pt-2 border-top border-secondary-subtle d-flex justify-content-between align-items-center">
+                    <a href="https://{{ item.website }}" target="_blank" class="text-secondary small text-decoration-none">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Visit Site
+                    </a>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="togglePassword({{ item.id }}, this)" title="Show/Hide Password">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" onclick="copyPassword({{ item.id }}, this)" title="Copy Password">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+                        <a class="btn btn-outline-warning btn-sm" href="{% url 'edit_password' item.id %}" title="Edit Entry">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-
-</div>
-
-{% endfor %}
-
-</div>
-
 {% else %}
-
-<div class="alert alert-info">
-
-No favorite passwords yet.
-
+<div class="card bg-dark border border-secondary-subtle rounded-3 p-5 text-center">
+    <i class="bi bi-star text-secondary display-4 mb-3"></i>
+    <h5 class="text-white">No Favorite Passwords Yet</h5>
+    <p class="text-secondary small mb-0">Star your important password entries in your main vault to see them here.</p>
 </div>
-
 {% endif %}
+{% endblock %}
 
+{% block extra_js %}
+<script>
+// Toggle Password Visibility
+function togglePassword(id, btn) {
+    const display = document.getElementById(`fav-pwd-display-${id}`);
+    const rawValue = document.getElementById(`fav-raw-pwd-${id}`).value;
+    const icon = btn.querySelector('i');
+
+    if (display.innerText === '••••••••••••') {
+        display.innerText = rawValue;
+        icon.className = 'bi bi-eye-slash';
+    } else {
+        display.innerText = '••••••••••••';
+        icon.className = 'bi bi-eye';
+    }
+}
+
+// Copy Password to Clipboard
+function copyPassword(id, btn) {
+    const rawValue = document.getElementById(`fav-raw-pwd-${id}`).value;
+    navigator.clipboard.writeText(rawValue);
+
+    const icon = btn.querySelector('i');
+    icon.className = 'bi bi-check-lg text-success';
+    setTimeout(() => {
+        icon.className = 'bi bi-clipboard';
+    }, 2000);
+}
+</script>
 {% endblock %}

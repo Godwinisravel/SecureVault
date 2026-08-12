@@ -1,27 +1,39 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 from vault.models import PasswordEntry, Category
+
 
 @login_required
 def dashboard(request):
 
+    # Current logged-in user
+    user = request.user
+
+    # Count this user's passwords
     total_passwords = PasswordEntry.objects.filter(
-        user=request.user
+        user=user
     ).count()
 
+    # Count this user's favorite passwords
     favorites = PasswordEntry.objects.filter(
-        user=request.user,
+        user=user,
         favorite=True
     ).count()
 
-    categories = Category.objects.count()
+    # Count this user's categories
+    categories = Category.objects.filter(
+        user=user
+    ).count()
+
+    context = {
+        "total_passwords": total_passwords,
+        "favorites": favorites,
+        "categories": categories,
+    }
 
     return render(
         request,
         "dashboard/dashboard.html",
-        {
-            "total_passwords": total_passwords,
-            "favorites": favorites,
-            "categories": categories,
-        }
+        context
     )

@@ -1,24 +1,30 @@
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns=[
 
-    path("admin/",admin.site.urls),
+urlpatterns = [
+    path("admin/", admin.site.urls),
 
-    path("",include("accounts.urls")),
+    # Dashboard MUST come before accounts
+    path("dashboard/", include("dashboard.urls")),
 
-    path("",include("vault.urls"))
+    # Accounts
+    path("", include("accounts.urls")),
 
+    # Vault
+    path("", include("vault.urls")),
 ]
 
+
 if settings.DEBUG:
-
-    urlpatterns+=static(
-
+    urlpatterns += static(
         settings.MEDIA_URL,
-
         document_root=settings.MEDIA_ROOT
+    )
 
+    urlpatterns += static(
+        settings.STATIC_URL,
+        document_root=settings.STATICFILES_DIRS[0]
     )
